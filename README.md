@@ -16,7 +16,7 @@ A full-stack real-time chat application with instant messaging, multiple rooms, 
 
 ---
 
-[Features](#-features) • [Installation](#-installation) • [Deployment](#-deployment) • [API](#-api-documentation)
+[Features](#-features) • [Installation](#-installation) • [API](#-api-documentation)
 
 </div>
 
@@ -25,14 +25,18 @@ A full-stack real-time chat application with instant messaging, multiple rooms, 
 
 ## 📸 Screenshots
 
+<div align="center">
+
 ### Login Screen
-![Login Screen](./client/public/screenshots/login.png)
+<img src="./client/public/screenshots/login.png" alt="Login Screen" width="600"/>
 
 ### Chat with Typing Indicator
-![Chat with Typing](./client/public/screenshots/chat-typing.png)
+<img src="./client/public/screenshots/chat-typing.png" alt="Chat with Typing" width="600"/>
 
 ### Active Chat Room
-![Chat Room](./client/public/screenshots/chat-room.png)
+<img src="./client/public/screenshots/chat-room.png" alt="Chat Room" width="600"/>
+
+</div>
 
 ---
 
@@ -116,37 +120,6 @@ npm run dev
 ```
 
 Access: http://localhost:5173
-
----
-
-## 🚀 Deployment
-
-### Deploy on Render (Backend)
-
-1. Create [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) database
-2. Go to [Render Dashboard](https://dashboard.render.com/)
-3. New Web Service → Connect GitHub repo
-4. Configure:
-   - **Root Directory:** `server`
-   - **Build Command:** `npm install`
-   - **Start Command:** `npm start`
-5. Add environment variables:
-   ```
-   NODE_ENV=production
-   MONGODB_URI=mongodb+srv://...
-   CLIENT_URL=https://your-app.netlify.app
-   ```
-
-### Deploy on Netlify (Frontend)
-
-1. Build client: `cd client && npm run build`
-2. Go to [Netlify Dashboard](https://app.netlify.com/)
-3. Deploy `client/dist` folder (drag & drop)
-4. Add environment variable:
-   ```
-   VITE_SOCKET_URL=https://your-app.onrender.com
-   ```
-5. Update Render's `CLIENT_URL` with your Netlify URL
 
 ---
 
