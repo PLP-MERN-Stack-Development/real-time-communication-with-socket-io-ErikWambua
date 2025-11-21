@@ -1,77 +1,238 @@
-# Real-Time Chat Application with Socket.io
+# 💬 Real-Time Chat Application
 
-This assignment focuses on building a real-time chat application using Socket.io, implementing bidirectional communication between clients and server.
+<div align="center">
 
-## Assignment Overview
+![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=for-the-badge&logo=react&logoColor=white)
+![Socket.io](https://img.shields.io/badge/Socket.io-4.7.5-010101?style=for-the-badge&logo=socket.io&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-18+-339933?style=for-the-badge&logo=node.js&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-8.20.1-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
 
-You will build a chat application with the following features:
-1. Real-time messaging using Socket.io
-2. User authentication and presence
-3. Multiple chat rooms or private messaging
-4. Real-time notifications
-5. Advanced features like typing indicators and read receipts
+A full-stack real-time chat application with instant messaging, multiple rooms, reactions, and typing indicators.
 
-## Project Structure
+### 🌐 Live Demo
+
+**Frontend (Client):** [https://your-app-name.netlify.app](https://your-app-name.netlify.app)  
+**Backend (Server):** [https://your-server-name.onrender.com](https://your-server-name.onrender.com)
+
+---
+
+[Features](#-features) • [Installation](#-installation) • [Deployment](#-deployment) • [API](#-api-documentation)
+
+</div>
+
+
+---
+
+## 📸 Screenshots
+
+### Login Screen
+![Login Screen](./client/public/screenshots/login.png)
+
+### Chat with Typing Indicator
+![Chat with Typing](./client/public/screenshots/chat-typing.png)
+
+### Active Chat Room
+![Chat Room](./client/public/screenshots/chat-room.png)
+
+---
+
+## ✨ Features
+
+- ✅ Real-time messaging with WebSocket
+- ✅ Multiple chat rooms (create, join, switch)
+- ✅ User authentication with avatars
+- ✅ Typing indicators
+- ✅ Message reactions (👍 ❤️ 😂 😮 😢 🔥)
+- ✅ Message editing and deletion
+- ✅ Private messaging
+- ✅ Online user list
+- ✅ Message search
+- ✅ Dark/Light theme
+- ✅ MongoDB persistence
+- ✅ Responsive design
+
+---
+
+## 🛠 Tech Stack
+
+**Frontend:** React 18, Vite, Socket.io Client  
+**Backend:** Node.js, Express, Socket.io, MongoDB, Mongoose  
+**Hosting:** Render (backend), Netlify (frontend)
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+- Node.js 18+ ([Download](https://nodejs.org/))
+- MongoDB (local or [Atlas](https://www.mongodb.com/cloud/atlas))
+- Git
+
+### Setup
+
+**1. Clone Repository**
+```bash
+git clone https://github.com/PLP-MERN-Stack-Development/real-time-communication-with-socket-io-ErikWambua.git
+cd real-time-communication-with-socket-io-ErikWambua
+```
+
+**2. Server Setup**
+```bash
+cd server
+npm install
+```
+
+Create `server/.env`:
+```env
+PORT=5000
+CLIENT_URL=http://localhost:5173
+MONGODB_URI=mongodb://localhost:27017/chat-app
+```
+
+**3. Client Setup**
+```bash
+cd client
+npm install
+```
+
+Create `client/.env`:
+```env
+VITE_SOCKET_URL=http://localhost:5000
+```
+
+**4. Run Application**
+
+Terminal 1 (Server):
+```bash
+cd server
+npm run dev
+```
+
+Terminal 2 (Client):
+```bash
+cd client
+npm run dev
+```
+
+Access: http://localhost:5173
+
+---
+
+## 🚀 Deployment
+
+### Deploy on Render (Backend)
+
+1. Create [MongoDB Atlas](https://www.mongodb.com/cloud/atlas) database
+2. Go to [Render Dashboard](https://dashboard.render.com/)
+3. New Web Service → Connect GitHub repo
+4. Configure:
+   - **Root Directory:** `server`
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+5. Add environment variables:
+   ```
+   NODE_ENV=production
+   MONGODB_URI=mongodb+srv://...
+   CLIENT_URL=https://your-app.netlify.app
+   ```
+
+### Deploy on Netlify (Frontend)
+
+1. Build client: `cd client && npm run build`
+2. Go to [Netlify Dashboard](https://app.netlify.com/)
+3. Deploy `client/dist` folder (drag & drop)
+4. Add environment variable:
+   ```
+   VITE_SOCKET_URL=https://your-app.onrender.com
+   ```
+5. Update Render's `CLIENT_URL` with your Netlify URL
+
+---
+
+## 🔧 API Documentation
+
+### REST Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Server health check |
+| GET | `/api/messages/:roomId` | Get message history |
+| GET | `/api/users` | Get online users |
+| GET | `/api/rooms` | Get all rooms |
+
+### Socket Events
+
+**Client → Server:**
+- `user_join` - Join chat
+- `send_message` - Send message
+- `typing` - Typing status
+- `create_room` - Create room
+- `join_room` - Join room
+- `message_reaction` - Add reaction
+
+**Server → Client:**
+- `receive_message` - New message
+- `user_list` - Online users
+- `typing_users` - Who's typing
+- `room_list` - Available rooms
+- `message_history` - Room history
+
+---
+
+## 🏗 Project Structure
 
 ```
-socketio-chat/
-├── client/                 # React front-end
-│   ├── public/             # Static files
-│   ├── src/                # React source code
-│   │   ├── components/     # UI components
-│   │   ├── context/        # React context providers
-│   │   ├── hooks/          # Custom React hooks
-│   │   ├── pages/          # Page components
-│   │   ├── socket/         # Socket.io client setup
-│   │   └── App.jsx         # Main application component
-│   └── package.json        # Client dependencies
-├── server/                 # Node.js back-end
-│   ├── config/             # Configuration files
-│   ├── controllers/        # Socket event handlers
-│   ├── models/             # Data models
-│   ├── socket/             # Socket.io server setup
-│   ├── utils/              # Utility functions
-│   ├── server.js           # Main server file
-│   └── package.json        # Server dependencies
-└── README.md               # Project documentation
+├── client/
+│   ├── src/
+│   │   ├── components/    # React components
+│   │   ├── socket/        # Socket.io config
+│   │   └── context/       # Theme context
+│   └── package.json
+├── server/
+│   ├── models/            # MongoDB models
+│   ├── server.js          # Main server
+│   └── package.json
+└── screenshots/           # App screenshots
 ```
 
-## Getting Started
+---
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Follow the setup instructions in the `Week5-Assignment.md` file
-4. Complete the tasks outlined in the assignment
+## 🚨 Troubleshooting
 
-## Files Included
+**Connection Issues:**
+- Check server is running on correct port
+- Verify environment variables
+- Check CORS settings
 
-- `Week5-Assignment.md`: Detailed assignment instructions
-- Starter code for both client and server:
-  - Basic project structure
-  - Socket.io configuration templates
-  - Sample components for the chat interface
+**Messages Not Sending:**
+- Ensure WebSocket connection is active
+- Check browser console for errors
+- Verify you're in the same room
 
-## Requirements
+**MongoDB Connection Failed:**
+- Check MongoDB is running
+- Verify connection string
+- Whitelist IP in Atlas
 
-- Node.js (v18 or higher)
-- npm or yarn
-- Modern web browser
-- Basic understanding of React and Express
+---
 
-## Submission
+## 📞 Contact
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+**Developer:** Erik Wambua  
+**GitHub:** [@ErikWambua](https://github.com/ErikWambua)  
+**Repository:** [View on GitHub](https://github.com/PLP-MERN-Stack-Development/real-time-communication-with-socket-io-ErikWambua)
 
-1. Complete both the client and server portions of the application
-2. Implement the core chat functionality
-3. Add at least 3 advanced features
-4. Document your setup process and features in the README.md
-5. Include screenshots or GIFs of your working application
-6. Optional: Deploy your application and add the URLs to your README.md
+---
 
-## Resources
+## 📝 License
 
-- [Socket.io Documentation](https://socket.io/docs/v4/)
-- [React Documentation](https://react.dev/)
-- [Express.js Documentation](https://expressjs.com/)
-- [Building a Chat Application with Socket.io](https://socket.io/get-started/chat) 
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+<div align="center">
+
+**Built with ❤️ using React, Socket.io, and MongoDB**
+
+</div> 

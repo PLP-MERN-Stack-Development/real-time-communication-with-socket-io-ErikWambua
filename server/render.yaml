@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: socketio-chat-server
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: CLIENT_URL
+        fromService:
+          type: web
+          name: socketio-chat-client
+          envVarKey: URL
