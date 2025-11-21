@@ -11,8 +11,8 @@ A full-stack real-time chat application with instant messaging, multiple rooms, 
 
 ### 🌐 Live Demo
 
-**Frontend (Client):** [https://your-app-name.netlify.app](https://your-app-name.netlify.app)  
-**Backend (Server):** [https://your-server-name.onrender.com](https://your-server-name.onrender.com)
+**Frontend (Client):** [https://real-time-communication-with-socket-io-hqk6.onrender.com](https://real-time-communication-with-socket-io-hqk6.onrender.com)  
+**Backend (Server):** [https://live-chatapp-room.onrender.com](https://live-chatapp-room.onrender.com)
 
 ---
 
