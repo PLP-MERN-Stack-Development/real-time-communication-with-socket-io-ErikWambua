@@ -89,6 +89,17 @@ body {
   height: 100%;
   display: flex;
   overflow: hidden;
+  position: relative;
+}
+
+/* Mobile menu button - hidden by default */
+.mobile-menu-button {
+  display: none;
+}
+
+/* Sidebar overlay - hidden by default */
+.sidebar-overlay {
+  display: none;
 }
 
 /* Sidebar */
@@ -395,12 +406,22 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: var(--bg-primary);
+  gap: 12px;
+}
+
+.chat-info {
+  flex: 1;
+  min-width: 0;
 }
 
 .chat-info h2 {
   font-size: 18px;
   font-weight: 600;
   margin-bottom: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .chat-info p {
@@ -857,16 +878,43 @@ body {
   .chat-sidebar {
     position: absolute;
     left: -100%;
-    transition: left 0.3s ease;
+    transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     z-index: 100;
     height: 100%;
     width: 85vw;
     max-width: 320px;
+    background: var(--bg-secondary);
   }
   
   .chat-sidebar.mobile-open {
     left: 0;
-    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Sidebar header gradient on mobile */
+  .sidebar-header {
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
+    border-bottom: none;
+  }
+  
+  .user-info {
+    color: white;
+  }
+  
+  .username {
+    color: white;
+    font-weight: 600;
+  }
+  
+  .theme-toggle {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    backdrop-filter: blur(10px);
+  }
+  
+  .theme-toggle:hover {
+    background: rgba(255, 255, 255, 0.25);
   }
   
   /* Mobile overlay */
@@ -879,6 +927,17 @@ body {
     background: rgba(0, 0, 0, 0.5);
     z-index: 99;
     display: none;
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
   
   .sidebar-overlay.active {
@@ -890,19 +949,20 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--bg-secondary);
-    border: 1px solid var(--border-color);
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     width: 44px;
     height: 44px;
     border-radius: var(--radius-md);
     cursor: pointer;
     font-size: 20px;
-    color: var(--text-primary);
+    color: white;
     transition: all 0.2s ease;
+    backdrop-filter: blur(10px);
   }
   
   .mobile-menu-button:hover {
-    background: var(--bg-tertiary);
+    background: rgba(255, 255, 255, 0.25);
   }
   
   .mobile-menu-button:active {
@@ -913,6 +973,9 @@ body {
   .chat-header {
     padding: 16px;
     gap: 12px;
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
+    border-bottom: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
   
   .chat-info {
@@ -925,28 +988,89 @@ body {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    color: white;
+    font-weight: 600;
   }
   
   .chat-info p {
-    font-size: 12px;
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 13px;
   }
   
   /* Mobile messages */
   .message-bubble {
     max-width: 90%;
+    font-size: 15px;
+    line-height: 1.5;
+    padding: 12px 16px;
+    border-radius: 18px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .message-bubble.own {
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
+    box-shadow: 0 2px 4px rgba(118, 75, 162, 0.2);
   }
   
   .messages-list {
-    padding: 12px;
+    padding: 16px;
+    gap: 12px;
   }
   
   /* Mobile input */
   .message-input-container {
-    padding: 12px;
+    padding: 16px;
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.05);
   }
   
   .input-wrapper {
-    padding: 8px;
+    padding: 10px 12px;
+    background: var(--bg-primary);
+    border-radius: 24px;
+    border: 2px solid var(--border-color);
+    transition: border-color 0.2s ease;
+  }
+  
+  .input-wrapper:focus-within {
+    border-color: var(--primary-color);
+  }
+  
+  .message-input {
+    font-size: 15px;
+  }
+  
+  .send-button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), #667eea);
+    box-shadow: 0 2px 6px rgba(118, 75, 162, 0.3);
+  }
+  
+  .send-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(118, 75, 162, 0.4);
+  }
+  
+  /* Room and user items on mobile */
+  .room-item,
+  .user-item {
+    padding: 14px 16px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+  }
+  
+  .room-item:active,
+  .user-item:active {
+    transform: scale(0.98);
+    background: var(--bg-tertiary);
+  }
+  
+  .room-item.active {
+    background: linear-gradient(135deg, rgba(118, 75, 162, 0.15), rgba(102, 126, 234, 0.15));
+    border-left: 3px solid var(--primary-color);
   }
   
   /* Better modals on mobile */
@@ -962,25 +1086,100 @@ body {
   
   /* Mobile login */
   .login-container {
-    padding: 16px;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
   
   .login-card {
-    padding: 24px;
-    border-radius: 16px;
+    padding: 32px 24px 24px;
+    border-radius: 24px 24px 0 0;
+    min-height: 100vh;
+    max-width: 100%;
+    border: none;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .login-header {
+    margin-bottom: 28px;
   }
   
   .logo {
-    flex-direction: column;
-    gap: 8px;
+    flex-direction: row;
+    gap: 12px;
+    margin-bottom: 8px;
+  }
+  
+  .logo-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 28px;
   }
   
   .logo h1 {
-    font-size: 24px;
+    font-size: 26px;
+  }
+  
+  .login-subtitle {
+    font-size: 15px;
+  }
+  
+  .form-input {
+    padding: 14px 16px;
+    font-size: 16px;
+    border-radius: 14px;
+  }
+  
+  .login-button {
+    padding: 16px;
+    font-size: 16px;
+    border-radius: 14px;
+    font-weight: 600;
+  }
+  
+  .features-section {
+    margin-top: 28px;
+  }
+  
+  .features-section h3 {
+    font-size: 16px;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+    font-weight: 600;
   }
   
   .features-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  
+  .feature-item {
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    border: 1px solid var(--border-color);
+    transition: all 0.2s ease;
+  }
+  
+  .feature-item:active {
+    transform: scale(0.98);
+  }
+  
+  .feature-icon {
+    font-size: 20px;
+  }
+  
+  .login-footer {
+    margin-top: 24px;
+  }
+  
+  .login-footer p {
+    font-size: 12px;
+  }
+  
+  .error-message {
+    padding: 10px 12px;
+    font-size: 13px;
   }
 }
 
@@ -1529,29 +1728,39 @@ body {
 /* Responsive Design */
 @media (max-width: 480px) {
   .login-container {
-    padding: 16px;
+    padding: 0;
   }
   
   .login-card {
-    padding: 24px;
-    border-radius: 16px;
+    padding: 28px 20px 20px;
+    border-radius: 20px 20px 0 0;
   }
   
-  .logo {
-    flex-direction: column;
-    gap: 8px;
+  .logo-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
   }
   
   .logo h1 {
-    font-size: 24px;
+    font-size: 22px;
+  }
+  
+  .login-subtitle {
+    font-size: 14px;
   }
   
   .features-grid {
     grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .feature-item {
+    padding: 10px;
   }
   
   .form-input {
-    padding: 14px;
+    padding: 12px 14px;
   }
   
   .login-button {
@@ -1571,8 +1780,25 @@ body {
   }
 }
 
+@keyframes slideUpFromBottom {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .login-card {
   animation: cardEntrance 0.6s ease-out;
+}
+
+@media (max-width: 640px) {
+  .login-card {
+    animation: slideUpFromBottom 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 }
 
 /* Avatar Preview in Profile Modal */

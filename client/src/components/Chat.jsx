@@ -17,6 +17,7 @@ const Chat = ({ username, onLogout, isConnected }) => {
   const [showCreateRoom, setShowCreateRoom] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [currentUserProfile, setCurrentUserProfile] = useState({
     username: username,
     avatar: '👤' // Default avatar
@@ -61,6 +62,7 @@ const Chat = ({ username, onLogout, isConnected }) => {
     if (room && room.id !== activeView) {
       joinRoom(room.id);
       setActiveView(room.id);
+      setIsSidebarOpen(false); // Close sidebar on mobile
     }
   };
 
@@ -112,8 +114,16 @@ const Chat = ({ username, onLogout, isConnected }) => {
 
   return (
     <div className="chat-app">
+      {/* Mobile Overlay */}
+      {isSidebarOpen && (
+        <div 
+          className="sidebar-overlay active"
+          onClick={() => setIsSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
-      <div className="chat-sidebar">
+      <div className={`chat-sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-header">
           <div className="user-info">
             <div className="user-avatar">
@@ -198,6 +208,13 @@ const Chat = ({ username, onLogout, isConnected }) => {
       {/* Main Chat Area */}
       <div className="chat-main">
         <div className="chat-header">
+          <button 
+            className="mobile-menu-button"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            title="Toggle menu"
+          >
+            ☰
+          </button>
           <div className="chat-info">
             <h2>{getChatTitle()}</h2>
             <p>{getChatSubtitle()}</p>
